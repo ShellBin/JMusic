@@ -11,10 +11,10 @@ public class LrcProcessor {
 	public void process(InputStream input,List<Long> timeMils,List<String> messages){
 		
 		try{
-			InputStreamReader inputReader = new InputStreamReader(input);
-			BufferedReader bufferedReader = new BufferedReader(inputReader);
+			InputStreamReader inputReader = new InputStreamReader(input);	//字节流到字符流
+			BufferedReader bufferedReader = new BufferedReader(inputReader);	//字符流到文本
 			String temp = null;
-			Pattern p = Pattern.compile("\\[([^\\]]+)\\]");		//歌词解析正则表达式
+			Pattern p = Pattern.compile("\\[([^\\]]+)\\]");	//正则
 			String result = null;
 			boolean b = true;
 			while((temp = bufferedReader.readLine())!=null){

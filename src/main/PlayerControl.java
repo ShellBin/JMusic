@@ -13,7 +13,7 @@ public class PlayerControl {
 	private List<MusicInfo> mpLists = new ArrayList<MusicInfo>();
 	
 	LrcProcessor lrc;
-	public void MainControl(){
+	public PlayerControl(){
 		lrc = new LrcProcessor();
 	}
 	public void add(File[]files){
@@ -30,7 +30,7 @@ public class PlayerControl {
 						
 						
 					} catch (FileNotFoundException e) {
-						// TODO 自动生成的 catch 块
+						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					break;
@@ -51,4 +51,5 @@ public class PlayerControl {
 	public void setMpLists(List<MusicInfo> mpLists) {
 		this.mpLists = mpLists;
 	}
+	
 }

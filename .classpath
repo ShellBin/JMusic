@@ -15,5 +15,6 @@
 	<classpathentry kind="lib" path="lib/vorbisspi1.0.2.jar"/>
 	<classpathentry kind="lib" path="lib/mp3spi1.9.5.jar"/>
 	<classpathentry kind="lib" path="lib/substance.jar"/>
+	<classpathentry kind="lib" path="lib/mp3_tools.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

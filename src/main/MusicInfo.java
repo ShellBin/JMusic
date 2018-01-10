@@ -1,45 +1,40 @@
-package main;
+package main;	//JavaBean
 
 import java.io.File;
+import mp3x.ctl.PlayerControl;
 import java.util.ArrayList;
 import java.util.List;
 
-import javazoom.jlgui.basicplayer.BasicController;
-import javazoom.jlgui.basicplayer.BasicPlayer;
-import javazoom.jlgui.basicplayer.BasicPlayerException;
-
 
 public class MusicInfo {
-	private BasicPlayer player = new BasicPlayer();
+	private PlayerControl player = new PlayerControl(); 
     private File file;
     private List<Long> timeMills = new ArrayList<Long>();
     private List<String> messages = new ArrayList<String>();
    
-	public File getFile() {
+	 public File getFile() {
 		return file;
 	}
-	
-    public void on() throws BasicPlayerException{
-    	player.open(file);
+	 
+	//实现了简单播放控制
+    public void on(){
+    	player.openSong(file.getAbsolutePath());
     	player.play();
     }
-    
-    public void goon() throws BasicPlayerException{
+    public void goon(){
     	player.resume();
     }
-    
-    public void pause() throws BasicPlayerException{
+    public void pause(){
     	player.pause();
     }
-    
-    public void stop() throws BasicPlayerException{
+    public void stop(){
     	player.stop();
     }
-    
 	public void setFile(File file) {
 		this.file = file;
 	}
-
+	
+	//播放的get set
 	public List<Long> getTimeMills() {
 		return timeMills;
 	}
@@ -56,8 +51,7 @@ public class MusicInfo {
 		this.messages = messages;
 	}
 
-	public BasicController getPlayer() {
+	public PlayerControl getPlayer() {
 		return player;
 	}
-	
 }
