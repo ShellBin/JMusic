@@ -1,4 +1,4 @@
-package main;	//JavaBean
+package stu38;	//JavaBean
 
 import java.io.File;
 import mp3x.ctl.PlayerControl;

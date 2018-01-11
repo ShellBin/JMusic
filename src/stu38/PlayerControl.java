@@ -1,4 +1,4 @@
-package main;
+package stu38;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.MusicInfo;
+import stu38.MusicInfo;
 
 public class PlayerControl {
 	private List<MusicInfo> mpLists = new ArrayList<MusicInfo>();

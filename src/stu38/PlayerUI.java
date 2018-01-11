@@ -1,4 +1,4 @@
-package main;
+package stu38;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -11,9 +11,9 @@ import org.jvnet.substance.skin.*;
 import java.io.File;
 import java.util.List;
 
-import main.PlayerControl;
-
 import mp3x.ctl.*;
+import stu38.MusicInfo;
+import stu38.PlayerControl;
 
 public class PlayerUI extends JFrame{
 
@@ -26,59 +26,57 @@ public class PlayerUI extends JFrame{
 	private JButton downButton;
 	private JButton addButton;
 	private JButton deleteButton;
-	private JList<String> list;
+	private JList list;
 	private JLabel l_name;
 	private JPanel back;
 	private JLabel [] l_texts = new JLabel[9];
 	private JLabel [] l_text = new JLabel[3];
 	private JLabel l_time;
-	private Checkbox checkBox;
+	private JCheckBox checkBox;
 	private JCheckBox treanBox;
 	private JCheckBox muteCheckBox;
 
 	
 	private boolean progressSliderDrag = false;
-	private DefaultListModel<String> model;
-	private PlayerControl control = null;
+	private DefaultListModel model;
+	private PlayerControl control;
 	private List<MusicInfo> lists;
 	private MusicInfo currentMp3;
 	private static int crrentList = 0;
 	private Mp3TVShow  mp3TVShow = new Mp3TVShow();
 	private Mp3TVShow  mp3TVShow1 = new Mp3TVShow();
-	private List<Long> times = null;
-	private List<String> messages = null;
+	private List<Long> times;
+	private List<String> messages;
 	
-	private Timer progressTime = null;
-	private Timer nameTime = null;
-	private Timer textTime = null;
+	private Timer progressTime;
+	private Timer nameTime;
+	private Timer textTime;
 	private static int currentValue = 0;
 	private static long currentTime = 0;
 	private static int L_WIDTH = 40;
 	private static int currentLocation = 4;
 	private static int currentLoca = 1;
 	
-	private boolean tranType = false;
+	private boolean tranType = false;	//单曲循环使能
 	
-	public enum Mp3Status{
+	public enum Mp3Status{	//枚举
 		PLAY,PAUSE,STOP
 	}
 	private Mp3Status currentStatus = Mp3Status.STOP;
 	
 	public PlayerUI(){
 		setSize(760,630);
-		//设置位置
-		setLocation(200, 50);
 		setLayout(null);
 		initCompent();
-		//设置可见
 		setVisible(true);
-		//点关闭按钮时退出
+		setTitle("38 - 叶文骏 - Jolita Music!");
 		this.setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	}
 
 	private void initCompent(){
+		//基础按键
 		processSlider = getProcessSlider();
 		this.add(processSlider);
 		playButton = getPlayButton();
@@ -95,10 +93,10 @@ public class PlayerUI extends JFrame{
 		this.add(deleteButton);
 		list = getList();
 		this.add(list);
-		//隐藏脉冲
+		//隐藏频谱
 		checkBox = getCheck();
 		this.add(checkBox);
-		//设置音量
+		//音量
 		volumnSlider = getVolumnSlider();
 		this.add(volumnSlider);
 		muteCheckBox = getMuteCheckBox();
@@ -106,19 +104,18 @@ public class PlayerUI extends JFrame{
 		//设置循环模式
 		treanBox = getTranBox();
 		this.add(treanBox);
-		//显示时间
+		//显示时间-已完成
 		l_time = new JLabel();
 		l_time.setBounds(293, 40, 40, 20);
-		l_time.setForeground(Color.white);
+		l_time.setForeground(Color.black);
 		l_time.setText("00:00");
 		this.add(l_time);
-		//设置脉冲
+		//频谱
 		mp3TVShow.setBounds(360, 100, 350, 270);
-		//mp3TVShow.setVisible(false);
 		this.add(mp3TVShow);
 		mp3TVShow1.setBounds(350, 80, 1, 1);
-		//mp3TVShow.setVisible(false);
 		this.add(mp3TVShow1);
+		
 		l_name = getNameLabel();
 		this.add(l_name);
 		//歌词
@@ -138,15 +135,15 @@ public class PlayerUI extends JFrame{
 		textTime = new Timer(10,new LrcListener());
 	}
 	
-	private Checkbox getCheck(){
+	private JCheckBox getCheck(){
 		if(checkBox==null){
-			checkBox = new Checkbox();
-			checkBox.setLabel("隐藏频谱");
+			checkBox = new JCheckBox();
+			checkBox.setText("隐藏频谱");
 			checkBox.setBounds(600, 70, 200, 20);
 			checkBox.addItemListener(new ItemListener(){
 
 				public void itemStateChanged(ItemEvent e) {
-					if(checkBox.getState()){
+					if(checkBox.isSelected()){
 						back.setVisible(true);
 						PlayerUI.this.remove(mp3TVShow);
 						PlayerUI.this.repaint();
@@ -186,7 +183,7 @@ public class PlayerUI extends JFrame{
 			l_name.setBounds(150, 25, 100, 20);
 			//l_name.setText("hello world");
 			l_name.setFont(new java.awt.Font("Dialog",0,14));
-			l_name.setForeground(Color.white);
+			l_name.setForeground(Color.orange);
 		}
 		return l_name;
 	}
@@ -421,7 +418,7 @@ public class PlayerUI extends JFrame{
 	}
 
 	private JList<String> getList(){
-		model = new DefaultListModel<String>();
+		model = new DefaultListModel();
 		
 		if(list==null){
 			list = new JList<String>();
@@ -439,12 +436,14 @@ public class PlayerUI extends JFrame{
 		}
 		return list;
 	}
-	private void dealPlay(){
-		playButton.setText("暂停");
+	
+	private void dealPlay(){		//开始播放
+		playButton.setText("暂停");	//设置
 		currentStatus = Mp3Status.PLAY;
 		playCurrentSong();
 	}
-	private void playCurrentSong(){
+	
+	private void playCurrentSong(){		//播放当前歌曲
 		if(currentMp3!=null){
 			currentMp3.stop();
 			currentMp3=null;
@@ -474,7 +473,7 @@ public class PlayerUI extends JFrame{
 			back.setOpaque(false);
 			//back.setBackground(Color.red);
 			initBack();
-			if(checkBox.getState()){
+			if(checkBox.isSelected()){
 				back.setVisible(true);
 			}else{
 				back.setVisible(false);
@@ -597,7 +596,10 @@ public class PlayerUI extends JFrame{
 		private String message = "";
 		public void actionPerformed(ActionEvent e) {
 			
-			for(int j = 0;j<times.size();j++){
+			System.out.println(currentMp3.getTimeMills());
+			System.out.println(currentMp3.getMessages().size());
+			
+			for(int j=0;j<times.size();j++){
 				nextMill = times.get(j);
 				if(currentTime < nextMill){
 					nextMill = times.get(j+1);
@@ -605,6 +607,7 @@ public class PlayerUI extends JFrame{
 					break;
 				}
 			}
+			
 			currentTime = currentTime + 10;
 			if(currentTime>nextMill){
 				if(message.equals(messages.get(i))){
@@ -624,19 +627,19 @@ public class PlayerUI extends JFrame{
 							l_text[currentLoca + index].setText(messages.get(i + index));
 							if(i>0){
 								l_text[0].setFont(new java.awt.Font("Dialog",0,16));
-								l_text[0].setForeground(Color.white);
+								l_text[0].setForeground(Color.orange);
 								l_text[0].setText(messages.get(i - 1));
 							}
 							if(i<(messages.size()-1)){
 								l_text[2].setFont(new java.awt.Font("Dialog",0,16));
-								l_text[2].setForeground(Color.white);
+								l_text[2].setForeground(Color.orange);
 								l_text[2].setText(messages.get(i + 1));
 							}
 							
 						}else {
 							if(i+index<messages.size()){
 								l_texts[(currentLocation + index)%9].setFont(new java.awt.Font("Dialog",0,16));
-								l_texts[(currentLocation + index)%9].setForeground(Color.white);
+								l_texts[(currentLocation + index)%9].setForeground(Color.orange);
 								l_texts[(currentLocation + index)%9].setText(messages.get(i + index));
 							}else{
 								l_texts[(currentLocation + index)%9].setText("");
@@ -648,11 +651,11 @@ public class PlayerUI extends JFrame{
 						if(c-1<i){
 							if(currentLocation - c>=0){
 								l_texts[currentLocation - c].setFont(new java.awt.Font("Dialog",0,16));
-								l_texts[currentLocation - c].setForeground(Color.white);
+								l_texts[currentLocation - c].setForeground(Color.orange);
 								l_texts[currentLocation - c].setText(messages.get(i -c));
 							}else{
 								l_texts[currentLocation - c + 9].setFont(new java.awt.Font("Dialog",0,16));
-								l_texts[currentLocation - c + 9].setForeground(Color.white);
+								l_texts[currentLocation - c + 9].setForeground(Color.orange);
 								l_texts[currentLocation - c + 9].setText(messages.get(i -c));
 							}
 						}
@@ -672,15 +675,4 @@ public class PlayerUI extends JFrame{
 		}
 		
 	}
-	
-	public static void main(String[]args){
-		try {
-			UIManager.setLookAndFeel(new SubstanceOfficeSilver2007LookAndFeel());
-		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		PlayerUI playerui = new PlayerUI();
-	}
-	
 }
